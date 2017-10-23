@@ -1,0 +1,32 @@
+version: '3.1'
+
+services:
+
+  microservice:
+  #Add your own Microservice or Application Image
+    image: <<App/MicroserviceName>> 
+    ports:
+      - "9999:9090"
+    networks:
+      - all
+    deploy:
+      replicas: 3
+
+  react:
+    image: <<ApplicationImage>>
+    ports:
+      - "80:80"
+    environment:
+      - BASE_URL=/run/secrets/base-url
+    secrets:
+      - base-url
+    networks:
+      - all
+    deploy:
+      replicas: 3   
+secrets:
+  base-url:
+    file: ./apiurl.txt
+
+networks:
+  all:
